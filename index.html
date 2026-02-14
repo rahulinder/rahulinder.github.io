@@ -14,7 +14,7 @@
     <style>
         /* General Reset */
         body {
-            background-color: #ade8f4;
+            background-color: #8ecae6; /* NEW BACKGROUND COLOR */
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -40,13 +40,13 @@
             z-index: 100;
         }
 
-        /* Logo Container - Clickable */
+        /* Logo Container */
         .logo-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            z-index: 101; /* Keep logo ABOVE the menu */
+            z-index: 101;
             transition: transform 0.3s ease;
             position: relative;
         }
@@ -58,19 +58,18 @@
         .logo {
             font-family: 'Niagara Engraved', sans-serif;
             font-size: 130px;
-            color: #000;
+            color: #001d3d; /* NEW DARK BLUE COLOR */
             margin: 0;
             line-height: 0.8;
             letter-spacing: 2px;
         }
 
-        /* The Separation Line - Centered Logic */
+        /* The Separation Line */
         .logo-line {
             width: 1500px;
             height: 2px;
-            background-color: #000;
+            background-color: #001d3d; /* NEW DARK BLUE COLOR */
             margin-top: 15px;
-            /* Force center alignment */
             position: relative;
             left: 50%;
             transform: translateX(-50%);
@@ -94,7 +93,7 @@
             position: relative;
         }
 
-        /* Name Wrapper - Draggable */
+        /* Name Wrapper */
         .name-wrapper {
             position: relative;
             display: inline-block;
@@ -111,7 +110,7 @@
             font-family: 'Ephesis', cursive;
             font-size: 110px;
             font-weight: normal;
-            color: #720026;
+            color: #ffffff; /* NEW WHITE COLOR */
             margin: 0;
             padding: 0 10px;
             line-height: 1.1;
@@ -139,7 +138,7 @@
             bottom: 10px;
             width: 0;
             height: 2px;
-            background-color: #720026;
+            background-color: #ffffff; /* MATCHES NAME COLOR */
             transition: width 0.4s ease, left 0.4s ease;
             pointer-events: none;
         }
@@ -147,7 +146,7 @@
         /* --- HOVER STATES --- */
         .name-wrapper:hover .main-name {
             transform: scale(1.15);
-            text-shadow: 0 10px 20px rgba(114, 0, 38, 0.2);
+            text-shadow: 0 10px 20px rgba(255, 255, 255, 0.3); /* Lighter shadow */
         }
 
         .name-wrapper:hover .underline {
@@ -192,33 +191,32 @@
             width: 35px;
             height: 35px;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: opacity(0.8); 
+            /* Optional: Filter to turn black icons into Dark Blue to match the logo */
+            filter: opacity(0.8) sepia(1) hue-rotate(190deg) saturate(3) brightness(0.6); 
             image-rendering: -webkit-optimize-contrast;
         }
 
         .social-icon:hover img {
             transform: scale(1.3);
-            filter: opacity(1);
+            filter: opacity(1) sepia(1) hue-rotate(190deg) saturate(5) brightness(0.5);
         }
 
-        /* --- DROPDOWN MENU FIXED --- */
+        /* --- DROPDOWN MENU --- */
         .dropdown-menu {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            
-            /* Initial State: Height 0 and Padding 0 to be completely invisible */
             height: 0;
-            padding-top: 0; 
+            padding-top: 0;
             
-            background-color: rgba(255, 255, 255, 0.5);
+            /* Glassmorphism compatible with new blue bg */
+            background-color: rgba(255, 255, 255, 0.3); 
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            
             z-index: 90;
             overflow: hidden;
-            
-            /* Animate height and padding together */
             transition: height 0.5s cubic-bezier(0.19, 1, 0.22, 1), 
                         padding-top 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             
@@ -229,17 +227,16 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        /* When Open: Add height AND padding */
         .dropdown-menu.open {
             height: 50vh;
-            padding-top: 100px; /* Moves links down below the logo */
+            padding-top: 100px;
         }
 
         .dropdown-menu a {
             padding: 15px 0;
             text-decoration: none;
             font-size: 1.5rem;
-            color: #222;
+            color: #001d3d; /* Dark Blue Links */
             display: block;
             transition: 0.3s;
             font-weight: 500;
@@ -259,8 +256,9 @@
         .dropdown-menu.open a:nth-child(4) { transition-delay: 0.4s; }
 
         .dropdown-menu a:hover {
-            color: #720026;
+            color: #ffffff; /* White on hover */
             transform: scale(1.1) !important;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
         #overlay {
@@ -270,7 +268,7 @@
             height: 100%;
             top: 0;
             left: 0;
-            background-color: rgba(0,0,0,0.2);
+            background-color: rgba(0,29,61, 0.3); /* Dark blue overlay */
             z-index: 80;
             backdrop-filter: blur(2px);
         }
