@@ -369,3 +369,43 @@
 
 </body>
 </html>
+<script>
+        // Create a canvas to draw the icon
+        const canvas = document.createElement('canvas');
+        canvas.width = 32;
+        canvas.height = 32;
+        const ctx = canvas.getContext('2d');
+        
+        // Find or create the favicon link tag
+        let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        link.type = 'image/x-icon';
+        link.rel = 'shortcut icon';
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+        let angle = 0;
+
+        // Update the icon every 100 milliseconds
+        setInterval(() => {
+            // 1. Clear the canvas
+            ctx.clearRect(0, 0, 32, 32);
+
+            // 2. Set up the text style (Simulating your Niagara font)
+            ctx.fillStyle = "#720026"; // Your specific dark red color
+            ctx.font = "bold 26px serif"; // 'serif' looks close to Niagara at this size
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            // 3. Rotate the canvas
+            ctx.save();
+            ctx.translate(16, 16); // Move to center
+            ctx.rotate(angle);     // Rotate by current angle
+            ctx.fillText("R", 0, 2); // Draw the "R" (adjusted slightly for center)
+            ctx.restore();
+
+            // 4. Set the favicon
+            link.href = canvas.toDataURL("image/x-icon");
+
+            // 5. Increase angle for next frame
+            angle += 0.2; 
+        }, 100);
+    </script>
