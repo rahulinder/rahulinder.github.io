@@ -33,24 +33,24 @@
         /* Header Styling */
         header {
             display: flex;
-            justify-content: center; /* Centered Logo */
-            align-items: flex-start;
-            padding: 20px 30px;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
             position: relative;
-            z-index: 2;
+            z-index: 100; /* Higher Z-index to stay above everything */
         }
 
-        /* Logo Container - NOW CLICKABLE */
+        /* Logo Container - Clickable */
         .logo-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            cursor: pointer; /* Shows hand cursor */
-            z-index: 30; /* Ensures it stays above everything */
+            cursor: pointer;
+            z-index: 101; /* Above the menu */
             transition: transform 0.3s ease;
+            position: relative;
         }
 
-        /* Hover effect for the logo */
         .logo-container:hover {
             transform: scale(1.05);
         }
@@ -64,11 +64,24 @@
             letter-spacing: 2px;
         }
 
+        /* The Separation Line - Centered Logic */
         .logo-line {
-            width: 1500px;
+            width: 1500px; /* Kept your requested length */
             height: 2px;
             background-color: #000;
             margin-top: 15px;
+            /* Force center alignment even if wider than screen */
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Wrapper for the line to prevent horizontal scrollbar if line is huge */
+        .line-wrapper {
+            width: 100%;
+            overflow: visible; 
+            display: flex;
+            justify-content: center;
         }
 
         /* Main Content Area */
@@ -159,7 +172,6 @@
             opacity: 0;
         }
 
-
         /* Footer Area (Socials) */
         .footer-container {
             padding: 40px;
@@ -173,7 +185,7 @@
         /* Social Icons Row */
         .social-row {
             display: flex;
-            gap: 40px; 
+            gap: 40px;
             justify-content: center;
             align-items: center;
         }
@@ -191,54 +203,61 @@
             filter: opacity(1);
         }
 
-        /* Side Menu Styles - BLURRED GLASS EFFECT */
-        .side-menu {
-            height: 100%;
-            width: 0;
+        /* --- NEW DROPDOWN MENU STYLES --- */
+        .dropdown-menu {
             position: fixed;
-            z-index: 20;
             top: 0;
             left: 0;
-            /* Semi-transparent white background */
-            background-color: rgba(255, 255, 255, 0.5); 
-            /* The Blur Effect */
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px); /* For Safari */
-            
-            overflow-x: hidden;
-            transition: 0.4s ease;
-            padding-top: 100px; /* Pushed down slightly */
-            box-shadow: 5px 0 25px rgba(0,0,0,0.1);
-            border-right: 1px solid rgba(255,255,255,0.4);
+            width: 100%;
+            height: 0; /* Starts hidden */
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 90; /* Below logo, above content */
+            overflow: hidden;
+            transition: height 0.5s cubic-bezier(0.19, 1, 0.22, 1); /* Smooth slide down */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center items vertically */
+            align-items: center; /* Center items horizontally */
+            padding-top: 100px; /* Space for the logo */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        .side-menu a {
-            padding: 15px 30px;
+        .dropdown-menu.open {
+            height: 50vh; /* Drops down to half screen height */
+        }
+
+        .dropdown-menu a {
+            padding: 15px 0;
             text-decoration: none;
-            font-size: 1.4rem; /* Slightly larger font */
+            font-size: 1.5rem;
             color: #222;
             display: block;
-            transition: 0.2s;
-            white-space: nowrap;
+            transition: 0.3s;
             font-weight: 500;
+            opacity: 0; /* Hidden initially for animation */
+            transform: translateY(-20px);
         }
 
-        .side-menu a:hover {
-            background-color: rgba(255, 230, 166, 0.6); /* Semi-transparent hover */
+        /* Animation for links appearing */
+        .dropdown-menu.open a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered delay for links */
+        .dropdown-menu.open a:nth-child(1) { transition-delay: 0.1s; }
+        .dropdown-menu.open a:nth-child(2) { transition-delay: 0.2s; }
+        .dropdown-menu.open a:nth-child(3) { transition-delay: 0.3s; }
+        .dropdown-menu.open a:nth-child(4) { transition-delay: 0.4s; }
+
+        .dropdown-menu a:hover {
             color: #720026;
-            padding-left: 40px;
+            transform: scale(1.1) !important;
         }
 
-        .side-menu .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            font-size: 50px;
-            margin-left: 0;
-            cursor: pointer;
-            color: #720026;
-        }
-
+        /* Overlay for clicking outside */
         #overlay {
             position: fixed;
             display: none;
@@ -246,11 +265,8 @@
             height: 100%;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            /* Darker overlay to make the blur pop */
-            background-color: rgba(0,0,0,0.2); 
-            z-index: 15;
+            background-color: rgba(0,0,0,0.2);
+            z-index: 80;
             backdrop-filter: blur(2px);
         }
 
@@ -258,16 +274,18 @@
         @media (max-width: 600px) {
             h1.main-name, h1.hi-msg { font-size: 70px; }
             .logo { font-size: 90px; }
-            .side-menu { width: 0; }
+            .dropdown-menu.open { height: 60vh; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-container" onclick="openMenu()">
+        <div class="logo-container" onclick="toggleMenu()">
             <div class="logo">R</div>
-            <div class="logo-line"></div>
+            <div class="line-wrapper">
+                <div class="logo-line"></div>
+            </div>
         </div>
     </header>
 
@@ -286,7 +304,7 @@
             </a>
 
             <a href="https://www.instagram.com/rahulinder20/" target="_blank" class="social-icon">
-                <img src="https://img.icons8.com/windows/200/instagram-new.png" alt="Instagram">
+                <img src="https://img.icons8.com/ios/200/instagram-new--v1.png" alt="Instagram">
             </a>
 
             <a href="https://www.linkedin.com/in/rahulinder-singh-sidhu-0a52563b1" target="_blank" class="social-icon">
@@ -295,10 +313,9 @@
         </div>
     </div>
 
-    <div id="overlay" onclick="closeMenu()"></div>
+    <div id="overlay" onclick="toggleMenu()"></div>
 
-    <div id="mySideMenu" class="side-menu">
-        <a href="javascript:void(0)" class="close-btn" onclick="closeMenu()">&times;</a>
+    <div id="myDropdown" class="dropdown-menu">
         <a href="https://github.com/rahulinder/DSA" target="_blank">DSA Repository</a>
         <a href="https://github.com/rahulinder/DAA" target="_blank">DAA Repository</a>
         <a href="https://github.com/rahulinder/VS" target="_blank">VS Code Config</a>
@@ -307,14 +324,19 @@
 
     <script>
         // --- MENU FUNCTIONS ---
-        function openMenu() {
-            document.getElementById("mySideMenu").style.width = "300px";
-            document.getElementById("overlay").style.display = "block";
-        }
-
-        function closeMenu() {
-            document.getElementById("mySideMenu").style.width = "0";
-            document.getElementById("overlay").style.display = "none";
+        function toggleMenu() {
+            const menu = document.getElementById("myDropdown");
+            const overlay = document.getElementById("overlay");
+            
+            // Toggle class 'open'
+            menu.classList.toggle("open");
+            
+            // Show/Hide Overlay based on menu state
+            if (menu.classList.contains("open")) {
+                overlay.style.display = "block";
+            } else {
+                overlay.style.display = "none";
+            }
         }
 
         // --- DRAG & DROP LOGIC ---
@@ -324,7 +346,6 @@
         let diffX = 0, diffY = 0;
         let hasMoved = false;
 
-        // MOUSE DOWN (Start Drag)
         draggable.addEventListener('mousedown', (e) => {
             isDragging = true;
             hasMoved = false;
@@ -333,7 +354,6 @@
             draggable.style.transition = 'none';
         });
 
-        // MOUSE MOVE (Dragging)
         window.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
             diffX = e.clientX - startX;
@@ -345,7 +365,6 @@
             draggable.style.transform = `translate(${diffX}px, ${diffY}px)`;
         });
 
-        // MOUSE UP (End Drag)
         window.addEventListener('mouseup', () => {
             if (!isDragging) return;
             isDragging = false;
@@ -358,7 +377,7 @@
             }
         });
 
-        // --- HI ANIMATION TRIGGER ---
+        // --- HI ANIMATION TRIGGER (1.5s) ---
         function triggerHiAnimation() {
             draggable.classList.add("active");
             setTimeout(() => {
