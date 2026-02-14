@@ -169,41 +169,27 @@
         }
 
 
-        /* Footer Area (Email + Socials) */
+        /* Footer Area (Socials) */
         .footer-container {
             padding: 40px;
             text-align: center;
             z-index: 1;
             display: flex;
-            flex-direction: column;
-            gap: 20px; /* Space between email and icons */
+            justify-content: center;
             align-items: center;
-        }
-
-        .email-link {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem;
-            color: #333;
-            text-decoration: none;
-            display: inline-block;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s;
-        }
-
-        .email-link:hover {
-            color: #720026;
-            transform: scale(1.2);
         }
 
         /* Social Icons Row */
         .social-row {
             display: flex;
-            gap: 25px; /* Space between icons */
+            gap: 30px; /* Space between icons */
             justify-content: center;
+            align-items: center;
         }
 
         .social-icon img {
-            width: 30px;
-            height: 30px;
+            width: 32px; /* Set to match the email icon size */
+            height: 32px;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             filter: opacity(0.7); /* Slightly faded by default */
         }
@@ -298,15 +284,17 @@
     </main>
 
     <div class="footer-container">
-        <a href="mailto:rsidhu_be24@thapar.edu" class="email-link">rsidhu_be24@thapar.edu</a>
-        
         <div class="social-row">
-            <a href="https://www.linkedin.com/in/rahulinder-singh-sidhu-0a52563b1" target="_blank" class="social-icon">
-                <img src="https://img.icons8.com/ios/48/linkedin.png" alt="LinkedIn">
+            <a href="mailto:rsidhu_be24@thapar.edu" class="social-icon">
+                <img src="https://img.icons8.com/external-kmg-design-basic-outline-kmg-design/32/external-email-interface-essentials-kmg-design-basic-outline-kmg-design.png" alt="Email">
             </a>
-            
+
             <a href="https://www.instagram.com/rahulinder20/" target="_blank" class="social-icon">
                 <img src="https://img.icons8.com/windows/48/instagram-new.png" alt="Instagram">
+            </a>
+
+            <a href="https://www.linkedin.com/in/rahulinder-singh-sidhu-0a52563b1" target="_blank" class="social-icon">
+                <img src="https://img.icons8.com/ios/48/linkedin.png" alt="LinkedIn">
             </a>
         </div>
     </div>
