@@ -3,155 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rahulinder Singh | Portfolio</title>
-    
+    <title>Rahulinder Singh Sidhu</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/parchment" rel="stylesheet">
 
     <style>
-        /* General Page Setup */
+        /* General Reset and Layout */
         body {
-            background-color: #FFE6A6; /* Your requested background color */
+            background-color: #FFE6A6;
             margin: 0;
             padding: 0;
             height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* Prevents scrollbars */
-            position: relative;
+            overflow-x: hidden; /* Prevent horizontal scroll from menu */
         }
 
-        /* The Background "Watermark" Name */
-        .background-name {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-10deg);
-            font-family: 'Ephesis', cursive;
-            font-size: 15vw; /* Responsive size (15% of viewport width) */
-            color: #000;
-            opacity: 0.04; /* Very faint to look "embedded" */
-            white-space: nowrap;
-            z-index: 0; /* Puts it behind everything */
-            pointer-events: none; /* Allows you to click through it */
-            user-select: none;
-        }
-
-        /* The Main Card Container */
-        .card {
-            background: rgba(255, 255, 255, 0.65); /* Semi-transparent white */
-            backdrop-filter: blur(8px); /* Blur effect behind the card */
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        /* Profile Image / Initials Circle (Optional visual touch) */
-        .profile-icon {
-            width: 80px;
-            height: 80px;
-            background-color: #333;
-            color: #FFE6A6;
-            border-radius: 50%;
-            margin: 0 auto 15px auto;
+        /* Header with Menu Icon and Logo */
+        header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: bold;
+            padding: 20px 30px;
+            position: relative;
+            z-index: 2; /* Ensure header is above other content */
         }
 
-        /* Email Styling */
-        .email {
-            font-size: 0.95rem;
-            color: #555;
-            text-decoration: none;
-            margin-bottom: 30px;
-            display: inline-block;
-            font-weight: 500;
-            padding: 5px 10px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 8px;
-            transition: all 0.2s;
+        .menu-icon {
+            font-size: 30px;
+            cursor: pointer;
+            color: #333;
         }
 
-        .email:hover {
+        .logo {
+            font-family: 'Parchment', cursive;
+            font-size: 100px;
             color: #000;
-            background: rgba(255,255,255,0.8);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
         }
 
-        /* Links List */
-        .links-container {
+        /* Main Content Area */
+        main {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1;
         }
 
-        .link-btn {
-            background-color: #fff;
+        /* Main Name */
+        h1.main-name {
+            font-family: 'Ephesis', cursive;
+            font-size: 70px;
+            font-weight: normal;
+            color: #000;
+            margin: 0;
+            padding: 0 20px; /* Add padding for smaller screens */
+        }
+
+        /* Email Footer */
+        .email-footer {
+            padding: 30px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .email-link {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
             color: #333;
             text-decoration: none;
-            padding: 15px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between; /* Puts arrow on the right */
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: color 0.2s;
         }
 
-        .link-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
-            background-color: #fffdf5;
+        .email-link:hover {
+            color: #000;
         }
 
-        .arrow {
+        /* Side Menu Styles */
+        .side-menu {
+            height: 100%;
+            width: 0; /* Initially hidden */
+            position: fixed;
+            z-index: 3; /* On top of everything */
+            top: 0;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            overflow-x: hidden;
+            transition: 0.3s; /* Smooth slide effect */
+            padding-top: 60px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .side-menu a {
+            padding: 15px 30px;
+            text-decoration: none;
             font-size: 1.2rem;
-            color: #999;
+            color: #333;
+            display: block;
+            transition: 0.2s;
+        }
+
+        .side-menu a:hover {
+            background-color: #FFE6A6;
+            color: #000;
+        }
+
+        .side-menu .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 36px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
+
+        /* Overlay for when menu is open */
+        #overlay {
+            position: fixed;
+            display: none; /* Hidden by default */
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.4); /* Black background with opacity */
+            z-index: 2; /* Below the menu but above content */
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <div class="background-name">RahulinderSingh Sidhu</div>
+    header>
+        <div class="menu-icon" onclick="openMenu()">&#9776;</div>
+        <div class="logo">R</div>
+        <div style="width: 30px;"></div> </header>
 
-    <div class="card">
-        <div class="profile-icon">RS</div>
-        
-        <a href="mailto:rsidhu_be24@thapar.edu" class="email">rsidhu_be24@thapar.edu</a>
+    <main>
+        <h1 class="main-name">Rahulinder Singh Sidhu</h1>
+    </main>
 
-        <div class="links-container">
-            <a href="https://github.com/rahulinder/DSA" target="_blank" class="link-btn">
-                <span>DSA Repository</span>
-                <span class="arrow">→</span>
-            </a>
-
-            <a href="https://github.com/rahulinder/DAA" target="_blank" class="link-btn">
-                <span>DAA Repository</span>
-                <span class="arrow">→</span>
-            </a>
-
-            <a href="https://github.com/rahulinder/VS" target="_blank" class="link-btn">
-                <span>VS Code Configuration</span>
-                <span class="arrow">→</span>
-            </a>
-
-            <a href="#" class="link-btn">
-                <span>First Website Project</span>
-                <span class="arrow">→</span>
-            </a>
-        </div>
+    <div class="email-footer">
+        <a href="mailto:rsidhu_be24@thapar.edu" class="email-link">rsidhu_be24@thapar.edu</a>
     </div>
+
+    <div id="overlay" onclick="closeMenu()"></div>
+
+    <div id="mySideMenu" class="side-menu">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeMenu()">&times;</a>
+        <a href="https://github.com/rahulinder/DSA" target="_blank">DSA Repository</a>
+        <a href="https://github.com/rahulinder/DAA" target="_blank">DAA Repository</a>
+        <a href="https://github.com/rahulinder/VS" target="_blank">VS Code Config</a>
+        <a href="#">First Website Project</a>
+    </div>
+
+    <script>
+        function openMenu() {
+            document.getElementById("mySideMenu").style.width = "300px";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        function closeMenu() {
+            document.getElementById("mySideMenu").style.width = "0";
+            document.getElementById("overlay").style.display = "none";
+        }
+    </script>
 
 </body>
 </html>
