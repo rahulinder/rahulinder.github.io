@@ -33,35 +33,26 @@
         /* Header Styling */
         header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center; /* Centered Logo */
             align-items: flex-start;
             padding: 20px 30px;
             position: relative;
             z-index: 2;
         }
 
-        .menu-icon {
-            font-size: 35px;
-            cursor: pointer;
-            color: #333;
-            margin-top: 10px;
-            z-index: 10;
-            transition: transform 0.2s;
-        }
-
-        .menu-icon:hover {
-            transform: scale(1.1);
-        }
-
-        /* Logo Container */
+        /* Logo Container - NOW CLICKABLE */
         .logo-container {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            pointer-events: none;
+            cursor: pointer; /* Shows hand cursor */
+            z-index: 30; /* Ensures it stays above everything */
+            transition: transform 0.3s ease;
+        }
+
+        /* Hover effect for the logo */
+        .logo-container:hover {
+            transform: scale(1.05);
         }
 
         .logo {
@@ -182,17 +173,16 @@
         /* Social Icons Row */
         .social-row {
             display: flex;
-            gap: 40px; /* INCREASED GAP for cleaner look */
+            gap: 40px; 
             justify-content: center;
             align-items: center;
         }
 
         .social-icon img {
-            width: 35px; /* Slightly larger for visibility */
+            width: 35px;
             height: 35px;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             filter: opacity(0.8); 
-            /* Fix for blurry images: Ensure smooth scaling */
             image-rendering: -webkit-optimize-contrast;
         }
 
@@ -201,7 +191,7 @@
             filter: opacity(1);
         }
 
-        /* Side Menu Styles */
+        /* Side Menu Styles - BLURRED GLASS EFFECT */
         .side-menu {
             height: 100%;
             width: 0;
@@ -209,34 +199,41 @@
             z-index: 20;
             top: 0;
             left: 0;
-            background-color: rgba(255, 255, 255, 0.98);
+            /* Semi-transparent white background */
+            background-color: rgba(255, 255, 255, 0.5); 
+            /* The Blur Effect */
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px); /* For Safari */
+            
             overflow-x: hidden;
             transition: 0.4s ease;
-            padding-top: 60px;
-            box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+            padding-top: 100px; /* Pushed down slightly */
+            box-shadow: 5px 0 25px rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(255,255,255,0.4);
         }
 
         .side-menu a {
             padding: 15px 30px;
             text-decoration: none;
-            font-size: 1.2rem;
-            color: #333;
+            font-size: 1.4rem; /* Slightly larger font */
+            color: #222;
             display: block;
             transition: 0.2s;
             white-space: nowrap;
+            font-weight: 500;
         }
 
         .side-menu a:hover {
-            background-color: #FFE6A6;
+            background-color: rgba(255, 230, 166, 0.6); /* Semi-transparent hover */
             color: #720026;
             padding-left: 40px;
         }
 
         .side-menu .close-btn {
             position: absolute;
-            top: 10px;
+            top: 20px;
             right: 25px;
-            font-size: 40px;
+            font-size: 50px;
             margin-left: 0;
             cursor: pointer;
             color: #720026;
@@ -251,7 +248,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0,0,0,0.4);
+            /* Darker overlay to make the blur pop */
+            background-color: rgba(0,0,0,0.2); 
             z-index: 15;
             backdrop-filter: blur(2px);
         }
@@ -267,14 +265,10 @@
 <body>
 
     <header>
-        <div class="menu-icon" onclick="openMenu()">&#9776;</div>
-        
-        <div class="logo-container">
+        <div class="logo-container" onclick="openMenu()">
             <div class="logo">R</div>
             <div class="logo-line"></div>
         </div>
-
-        <div style="width: 35px;"></div> 
     </header>
 
     <main>
