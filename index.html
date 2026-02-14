@@ -21,6 +21,12 @@
             flex-direction: column;
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
+            
+            /* DISABLE TEXT SELECTION GLOBALLY */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
         }
 
         /* Header Styling */
@@ -85,11 +91,17 @@
             position: relative;
         }
 
-        /* Name Wrapper - Holds both "Name" and "Hi" */
+        /* Name Wrapper - Draggable */
         .name-wrapper {
             position: relative;
             display: inline-block;
-            cursor: pointer; /* Change cursor to indicate clickability */
+            cursor: grab; /* Shows hand icon */
+            /* Ensure transforms happen smoothly when released */
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .name-wrapper:active {
+            cursor: grabbing; /* Shows grabbing hand when clicking */
         }
 
         /* Common style for Name and Hi text */
@@ -101,7 +113,8 @@
             margin: 0;
             padding: 0 10px;
             line-height: 1.1;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy transition */
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            pointer-events: none; /* Let clicks pass through to wrapper */
         }
 
         /* The Name Text */
@@ -118,7 +131,6 @@
             transform: translate(-50%, -50%) scale(0);
             opacity: 0;
             width: 100%;
-            pointer-events: none;
         }
 
         /* The Animated Underline */
@@ -133,7 +145,7 @@
             pointer-events: none;
         }
 
-        /* --- HOVER STATES (Only work when NOT clicked) --- */
+        /* --- HOVER STATES (Only when not dragging) --- */
         .name-wrapper:hover .main-name {
             transform: scale(1.15);
             text-shadow: 0 10px 20px rgba(114, 0, 38, 0.2);
@@ -144,21 +156,17 @@
             left: 10%;
         }
 
-        /* --- CLICKED / ACTIVE STATES --- */
-        
-        /* Hide Name when clicked */
+        /* --- CLICKED / ACTIVE STATES (Hi Animation) --- */
         .name-wrapper.active .main-name {
             opacity: 0;
-            transform: scale(0.5); /* Shrinks away */
+            transform: scale(0.5);
         }
 
-        /* Show Hi when clicked */
         .name-wrapper.active .hi-msg {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1.2); /* Pops in */
+            transform: translate(-50%, -50%) scale(1.2);
         }
 
-        /* Hide underline when showing Hi (looks cleaner) */
         .name-wrapper.active .underline {
             width: 0 !important;
             opacity: 0;
@@ -263,10 +271,11 @@
     </header>
 
     <main>
-        <div class="name-wrapper" onclick="triggerHiAnimation(this)">
+        <div id="dragName" class="name-wrapper">
             <h1 class="main-name">Rahulinder Singh Sidhu</h1>
             <h1 class="hi-msg">Hi!</h1>
-            <div class="underline"></div> </div>
+            <div class="underline"></div>
+        </div>
     </main>
 
     <div class="email-footer">
@@ -284,6 +293,7 @@
     </div>
 
     <script>
+        // --- MENU FUNCTIONS ---
         function openMenu() {
             document.getElementById("mySideMenu").style.width = "300px";
             document.getElementById("overlay").style.display = "block";
@@ -294,14 +304,65 @@
             document.getElementById("overlay").style.display = "none";
         }
 
-        // New Function for Hi Animation
-        function triggerHiAnimation(element) {
-            // Add the 'active' class which triggers the CSS changes
-            element.classList.add("active");
+        // --- DRAG & DROP LOGIC ---
+        const draggable = document.getElementById('dragName');
+        let isDragging = false;
+        let startX, startY;
+        let diffX = 0, diffY = 0;
+        let hasMoved = false; // To distinguish between click and drag
 
-            // Remove the class after 2 seconds to revert back
+        // MOUSE DOWN (Start Drag)
+        draggable.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            hasMoved = false;
+            
+            // Record initial mouse position
+            startX = e.clientX;
+            startY = e.clientY;
+            
+            // Remove transition for instant following
+            draggable.style.transition = 'none';
+        });
+
+        // MOUSE MOVE (Dragging)
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            // Calculate how far we moved
+            diffX = e.clientX - startX;
+            diffY = e.clientY - startY;
+
+            // If moved more than 5 pixels, count it as a drag (not a click)
+            if (Math.abs(diffX) > 5 || Math.abs(diffY) > 5) {
+                hasMoved = true;
+            }
+
+            // Apply movement
+            draggable.style.transform = `translate(${diffX}px, ${diffY}px)`;
+        });
+
+        // MOUSE UP (End Drag)
+        window.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+
+            // Add bounce transition back
+            draggable.style.transition = 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            
+            // Snap back to center
+            draggable.style.transform = 'translate(0px, 0px)';
+
+            // If we didn't move much, treat it as a CLICK (trigger Hi animation)
+            if (!hasMoved) {
+                triggerHiAnimation();
+            }
+        });
+
+        // --- HI ANIMATION TRIGGER ---
+        function triggerHiAnimation() {
+            draggable.classList.add("active");
             setTimeout(() => {
-                element.classList.remove("active");
+                draggable.classList.remove("active");
             }, 2000);
         }
     </script>
