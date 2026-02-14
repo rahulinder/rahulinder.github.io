@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rahulinder Singh Sidhu</title>
 
-    <link rel="icon" type="image/png" href="https://img.icons8.com/color/100/oggy--v1.png">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/150/full-moon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
@@ -24,10 +24,10 @@
             overflow-x: hidden;
             
             /* DISABLE TEXT SELECTION GLOBALLY */
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* IE10+/Edge */
-            user-select: none; /* Standard */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         /* Header Styling */
@@ -66,7 +66,6 @@
 
         .logo {
             font-family: 'Niagara Engraved', sans-serif;
-            font-weight: bold;
             font-size: 110px;
             color: #000;
             margin: 0;
@@ -75,7 +74,7 @@
         }
 
         .logo-line {
-            width: 150px;
+            width: 1500px;
             height: 2px;
             background-color: #000;
             margin-top: 15px;
@@ -96,13 +95,12 @@
         .name-wrapper {
             position: relative;
             display: inline-block;
-            cursor: grab; /* Shows hand icon */
-            /* Ensure transforms happen smoothly when released */
+            cursor: grab;
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .name-wrapper:active {
-            cursor: grabbing; /* Shows grabbing hand when clicking */
+            cursor: grabbing;
         }
 
         /* Common style for Name and Hi text */
@@ -115,16 +113,14 @@
             padding: 0 10px;
             line-height: 1.1;
             transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            pointer-events: none; /* Let clicks pass through to wrapper */
+            pointer-events: none;
         }
 
-        /* The Name Text */
         h1.main-name {
             opacity: 1;
             transform: scale(1);
         }
 
-        /* The "Hi" Text - Hidden by default */
         h1.hi-msg {
             position: absolute;
             top: 50%;
@@ -134,7 +130,6 @@
             width: 100%;
         }
 
-        /* The Animated Underline */
         .underline {
             position: absolute;
             left: 50%;
@@ -146,7 +141,7 @@
             pointer-events: none;
         }
 
-        /* --- HOVER STATES (Only when not dragging) --- */
+        /* --- HOVER STATES --- */
         .name-wrapper:hover .main-name {
             transform: scale(1.15);
             text-shadow: 0 10px 20px rgba(114, 0, 38, 0.2);
@@ -157,7 +152,7 @@
             left: 10%;
         }
 
-        /* --- CLICKED / ACTIVE STATES (Hi Animation) --- */
+        /* --- ACTIVE STATES (Hi Animation) --- */
         .name-wrapper.active .main-name {
             opacity: 0;
             transform: scale(0.5);
@@ -174,11 +169,15 @@
         }
 
 
-        /* Email Footer */
-        .email-footer {
+        /* Footer Area (Email + Socials) */
+        .footer-container {
             padding: 40px;
             text-align: center;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between email and icons */
+            align-items: center;
         }
 
         .email-link {
@@ -193,6 +192,25 @@
         .email-link:hover {
             color: #720026;
             transform: scale(1.2);
+        }
+
+        /* Social Icons Row */
+        .social-row {
+            display: flex;
+            gap: 25px; /* Space between icons */
+            justify-content: center;
+        }
+
+        .social-icon img {
+            width: 30px;
+            height: 30px;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: opacity(0.7); /* Slightly faded by default */
+        }
+
+        .social-icon:hover img {
+            transform: scale(1.3); /* Pop effect */
+            filter: opacity(1); /* Full color on hover */
         }
 
         /* Side Menu Styles */
@@ -279,8 +297,18 @@
         </div>
     </main>
 
-    <div class="email-footer">
+    <div class="footer-container">
         <a href="mailto:rsidhu_be24@thapar.edu" class="email-link">rsidhu_be24@thapar.edu</a>
+        
+        <div class="social-row">
+            <a href="https://www.linkedin.com/in/rahulinder-singh-sidhu-0a52563b1" target="_blank" class="social-icon">
+                <img src="https://img.icons8.com/ios-filled/50/000000/linkedin-2--v1.png" alt="LinkedIn">
+            </a>
+            
+            <a href="https://www.instagram.com/rahulinder20/" target="_blank" class="social-icon">
+                <img src="https://img.icons8.com/ios-filled/50/000000/instagram-new--v1.png" alt="Instagram">
+            </a>
+        </div>
     </div>
 
     <div id="overlay" onclick="closeMenu()"></div>
@@ -310,35 +338,26 @@
         let isDragging = false;
         let startX, startY;
         let diffX = 0, diffY = 0;
-        let hasMoved = false; // To distinguish between click and drag
+        let hasMoved = false;
 
         // MOUSE DOWN (Start Drag)
         draggable.addEventListener('mousedown', (e) => {
             isDragging = true;
             hasMoved = false;
-            
-            // Record initial mouse position
             startX = e.clientX;
             startY = e.clientY;
-            
-            // Remove transition for instant following
             draggable.style.transition = 'none';
         });
 
         // MOUSE MOVE (Dragging)
         window.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-
-            // Calculate how far we moved
             diffX = e.clientX - startX;
             diffY = e.clientY - startY;
 
-            // If moved more than 5 pixels, count it as a drag (not a click)
             if (Math.abs(diffX) > 5 || Math.abs(diffY) > 5) {
                 hasMoved = true;
             }
-
-            // Apply movement
             draggable.style.transform = `translate(${diffX}px, ${diffY}px)`;
         });
 
@@ -347,13 +366,9 @@
             if (!isDragging) return;
             isDragging = false;
 
-            // Add bounce transition back
             draggable.style.transition = 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            
-            // Snap back to center
             draggable.style.transform = 'translate(0px, 0px)';
 
-            // If we didn't move much, treat it as a CLICK (trigger Hi animation)
             if (!hasMoved) {
                 triggerHiAnimation();
             }
