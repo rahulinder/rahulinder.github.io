@@ -37,7 +37,7 @@
             align-items: center;
             padding: 30px;
             position: relative;
-            z-index: 100; /* Higher Z-index to stay above everything */
+            z-index: 100;
         }
 
         /* Logo Container - Clickable */
@@ -46,7 +46,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            z-index: 101; /* Above the menu */
+            z-index: 101; /* Keep logo ABOVE the menu */
             transition: transform 0.3s ease;
             position: relative;
         }
@@ -66,17 +66,16 @@
 
         /* The Separation Line - Centered Logic */
         .logo-line {
-            width: 1500px; /* Kept your requested length */
+            width: 1500px;
             height: 2px;
             background-color: #000;
             margin-top: 15px;
-            /* Force center alignment even if wider than screen */
+            /* Force center alignment */
             position: relative;
             left: 50%;
             transform: translateX(-50%);
         }
 
-        /* Wrapper for the line to prevent horizontal scrollbar if line is huge */
         .line-wrapper {
             width: 100%;
             overflow: visible; 
@@ -107,7 +106,7 @@
             cursor: grabbing;
         }
 
-        /* Common style for Name and Hi text */
+        /* Name and Hi text styles */
         h1.main-name, h1.hi-msg {
             font-family: 'Ephesis', cursive;
             font-size: 110px;
@@ -182,7 +181,6 @@
             align-items: center;
         }
 
-        /* Social Icons Row */
         .social-row {
             display: flex;
             gap: 40px;
@@ -203,29 +201,38 @@
             filter: opacity(1);
         }
 
-        /* --- NEW DROPDOWN MENU STYLES --- */
+        /* --- DROPDOWN MENU FIXED --- */
         .dropdown-menu {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 0; /* Starts hidden */
+            
+            /* Initial State: Height 0 and Padding 0 to be completely invisible */
+            height: 0;
+            padding-top: 0; 
+            
             background-color: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            z-index: 90; /* Below logo, above content */
+            z-index: 90;
             overflow: hidden;
-            transition: height 0.5s cubic-bezier(0.19, 1, 0.22, 1); /* Smooth slide down */
+            
+            /* Animate height and padding together */
+            transition: height 0.5s cubic-bezier(0.19, 1, 0.22, 1), 
+                        padding-top 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Center items vertically */
-            align-items: center; /* Center items horizontally */
-            padding-top: 100px; /* Space for the logo */
+            justify-content: center;
+            align-items: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
+        /* When Open: Add height AND padding */
         .dropdown-menu.open {
-            height: 50vh; /* Drops down to half screen height */
+            height: 50vh;
+            padding-top: 100px; /* Moves links down below the logo */
         }
 
         .dropdown-menu a {
@@ -236,17 +243,16 @@
             display: block;
             transition: 0.3s;
             font-weight: 500;
-            opacity: 0; /* Hidden initially for animation */
+            opacity: 0;
             transform: translateY(-20px);
         }
 
-        /* Animation for links appearing */
         .dropdown-menu.open a {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Staggered delay for links */
+        /* Staggered animation */
         .dropdown-menu.open a:nth-child(1) { transition-delay: 0.1s; }
         .dropdown-menu.open a:nth-child(2) { transition-delay: 0.2s; }
         .dropdown-menu.open a:nth-child(3) { transition-delay: 0.3s; }
@@ -257,7 +263,6 @@
             transform: scale(1.1) !important;
         }
 
-        /* Overlay for clicking outside */
         #overlay {
             position: fixed;
             display: none;
@@ -270,7 +275,6 @@
             backdrop-filter: blur(2px);
         }
 
-        /* Mobile Responsiveness */
         @media (max-width: 600px) {
             h1.main-name, h1.hi-msg { font-size: 70px; }
             .logo { font-size: 90px; }
@@ -328,10 +332,8 @@
             const menu = document.getElementById("myDropdown");
             const overlay = document.getElementById("overlay");
             
-            // Toggle class 'open'
             menu.classList.toggle("open");
             
-            // Show/Hide Overlay based on menu state
             if (menu.classList.contains("open")) {
                 overlay.style.display = "block";
             } else {
