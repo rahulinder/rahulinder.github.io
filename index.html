@@ -20,33 +20,50 @@
             display: flex;
             flex-direction: column;
             font-family: 'Poppins', sans-serif;
-            overflow-x: hidden; /* Prevent horizontal scroll from menu */
+            overflow-x: hidden;
         }
 
-        /* Header with Menu Icon and Logo */
+        /* Header Styling */
         header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start; /* Aligns items to top */
             padding: 20px 30px;
             position: relative;
-            z-index: 2; /* Ensure header is above other content */
+            z-index: 2;
         }
 
         .menu-icon {
-            font-size: 30px;
+            font-size: 35px;
             cursor: pointer;
             color: #333;
+            margin-top: 10px; /* Align with logo center */
+        }
+
+        /* Logo Container to hold R and the Line */
+        .logo-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .logo {
             font-family: 'Parchment', cursive;
-            font-size: 100px;
+            font-size: 120px; /* Slightly larger logo */
             color: #000;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             margin: 0;
+            line-height: 0.8; /* Reduces gap above/below letter */
+        }
+
+        /* The Horizontal Line below logo */
+        .logo-line {
+            width: 150px; /* Length of the line */
+            height: 2px;
+            background-color: #000;
+            margin-top: 10px;
         }
 
         /* Main Content Area */
@@ -60,19 +77,20 @@
             z-index: 1;
         }
 
-        /* Main Name */
+        /* Main Name Styling */
         h1.main-name {
             font-family: 'Ephesis', cursive;
-            font-size: 70px;
+            font-size: 110px; /* Increased Size */
             font-weight: normal;
-            color: #000;
+            color: #720026; /* New Color */
             margin: 0;
-            padding: 0 20px; /* Add padding for smaller screens */
+            padding: 0 20px;
+            line-height: 1.1;
         }
 
         /* Email Footer */
         .email-footer {
-            padding: 30px;
+            padding: 40px;
             text-align: center;
             z-index: 1;
         }
@@ -86,22 +104,22 @@
         }
 
         .email-link:hover {
-            color: #000;
+            color: #720026;
         }
 
         /* Side Menu Styles */
         .side-menu {
             height: 100%;
-            width: 0; /* Initially hidden */
+            width: 0;
             position: fixed;
-            z-index: 3; /* On top of everything */
+            z-index: 3;
             top: 0;
             left: 0;
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.98);
             overflow-x: hidden;
-            transition: 0.3s; /* Smooth slide effect */
+            transition: 0.3s;
             padding-top: 60px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
         }
 
         .side-menu a {
@@ -115,7 +133,7 @@
 
         .side-menu a:hover {
             background-color: #FFE6A6;
-            color: #000;
+            color: #720026;
         }
 
         .side-menu .close-btn {
@@ -127,28 +145,42 @@
             cursor: pointer;
         }
 
-        /* Overlay for when menu is open */
         #overlay {
             position: fixed;
-            display: none; /* Hidden by default */
+            display: none;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0,0,0,0.4); /* Black background with opacity */
-            z-index: 2; /* Below the menu but above content */
-            cursor: pointer;
+            background-color: rgba(0,0,0,0.4);
+            z-index: 2;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            h1.main-name {
+                font-size: 70px; /* Smaller on phone so it fits */
+            }
+            .logo {
+                font-size: 90px;
+            }
         }
     </style>
 </head>
 <body>
 
-    header>
+    <header>
         <div class="menu-icon" onclick="openMenu()">&#9776;</div>
-        <div class="logo">R</div>
-        <div style="width: 30px;"></div> </header>
+        
+        <div class="logo-container">
+            <div class="logo">R</div>
+            <div class="logo-line"></div>
+        </div>
+
+        <div style="width: 35px;"></div> 
+    </header>
 
     <main>
         <h1 class="main-name">Rahulinder Singh Sidhu</h1>
