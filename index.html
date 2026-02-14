@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-    
     <link href="https://fonts.cdnfonts.com/css/niagara-engraved" rel="stylesheet">
 
     <style>
@@ -59,9 +58,9 @@
         }
 
         .logo {
-            font-family: 'Niagara Engraved', sans-serif; /* Changed to Niagara */
+            font-family: 'Niagara Engraved', sans-serif;
             font-weight: bold;
-            font-size: 110px; /* Adjusted size for this specific font */
+            font-size: 110px;
             color: #000;
             margin: 0;
             line-height: 0.8;
@@ -83,16 +82,18 @@
             align-items: center;
             text-align: center;
             z-index: 1;
+            position: relative;
         }
 
-        /* Wrapper for the Name to handle the underline positioning */
+        /* Name Wrapper - Holds both "Name" and "Hi" */
         .name-wrapper {
             position: relative;
             display: inline-block;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer; /* Change cursor to indicate clickability */
         }
 
-        h1.main-name {
+        /* Common style for Name and Hi text */
+        h1.main-name, h1.hi-msg {
             font-family: 'Ephesis', cursive;
             font-size: 110px;
             font-weight: normal;
@@ -100,31 +101,69 @@
             margin: 0;
             padding: 0 10px;
             line-height: 1.1;
-            cursor: default;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy transition */
+        }
+
+        /* The Name Text */
+        h1.main-name {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* The "Hi" Text - Hidden by default */
+        h1.hi-msg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            width: 100%;
+            pointer-events: none;
         }
 
         /* The Animated Underline */
-        .name-wrapper::after {
-            content: '';
+        .underline {
             position: absolute;
-            left: 50%; /* Start from center */
-            bottom: 10px; /* Position slightly below text */
-            width: 0; /* Start with no width */
-            height: 2px; /* Thickness of underline */
+            left: 50%;
+            bottom: 10px;
+            width: 0;
+            height: 2px;
             background-color: #720026;
-            transition: width 0.4s ease, left 0.4s ease; /* Animate width and position */
+            transition: width 0.4s ease, left 0.4s ease;
+            pointer-events: none;
         }
 
-        /* Hover Effects for Name */
-        .name-wrapper:hover {
-            transform: scale(1.15); /* Expand the whole wrapper */
+        /* --- HOVER STATES (Only work when NOT clicked) --- */
+        .name-wrapper:hover .main-name {
+            transform: scale(1.15);
             text-shadow: 0 10px 20px rgba(114, 0, 38, 0.2);
         }
 
-        .name-wrapper:hover::after {
-            width: 80%; /* Expand line to 80% of name width */
-            left: 10%; /* Center it (10% left gap + 80% width + 10% right gap) */
+        .name-wrapper:hover .underline {
+            width: 80%;
+            left: 10%;
         }
+
+        /* --- CLICKED / ACTIVE STATES --- */
+        
+        /* Hide Name when clicked */
+        .name-wrapper.active .main-name {
+            opacity: 0;
+            transform: scale(0.5); /* Shrinks away */
+        }
+
+        /* Show Hi when clicked */
+        .name-wrapper.active .hi-msg {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.2); /* Pops in */
+        }
+
+        /* Hide underline when showing Hi (looks cleaner) */
+        .name-wrapper.active .underline {
+            width: 0 !important;
+            opacity: 0;
+        }
+
 
         /* Email Footer */
         .email-footer {
@@ -138,13 +177,13 @@
             font-size: 1.1rem;
             color: #333;
             text-decoration: none;
-            display: inline-block; /* Required for transform to work */
+            display: inline-block;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s;
         }
 
         .email-link:hover {
             color: #720026;
-            transform: scale(1.2); /* Expand effect on hover */
+            transform: scale(1.2);
         }
 
         /* Side Menu Styles */
@@ -204,7 +243,7 @@
 
         /* Mobile Responsiveness */
         @media (max-width: 600px) {
-            h1.main-name { font-size: 70px; }
+            h1.main-name, h1.hi-msg { font-size: 70px; }
             .logo { font-size: 90px; }
             .side-menu { width: 0; }
         }
@@ -224,9 +263,10 @@
     </header>
 
     <main>
-        <div class="name-wrapper">
+        <div class="name-wrapper" onclick="triggerHiAnimation(this)">
             <h1 class="main-name">Rahulinder Singh Sidhu</h1>
-        </div>
+            <h1 class="hi-msg">Hi!</h1>
+            <div class="underline"></div> </div>
     </main>
 
     <div class="email-footer">
@@ -252,6 +292,17 @@
         function closeMenu() {
             document.getElementById("mySideMenu").style.width = "0";
             document.getElementById("overlay").style.display = "none";
+        }
+
+        // New Function for Hi Animation
+        function triggerHiAnimation(element) {
+            // Add the 'active' class which triggers the CSS changes
+            element.classList.add("active");
+
+            // Remove the class after 2 seconds to revert back
+            setTimeout(() => {
+                element.classList.remove("active");
+            }, 2000);
         }
     </script>
 
