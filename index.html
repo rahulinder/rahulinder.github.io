@@ -264,8 +264,9 @@
             width: 60px;
             height: 60px;
             cursor: pointer;
-            z-index: 5; /* Above background, below text usually, or just interactive */
+            z-index: 15; /* Sits ABOVE the name/about section so it's clickable */
             transition: transform 0.3s ease;
+            object-fit: contain; /* Ensures the image doesn't distort */
         }
         
         /* Animation classes for the flower interaction */
@@ -408,7 +409,8 @@
     </div>
 
     <script>
-        [cite_start]// --- FLOWER LOGIC [cite: 1] ---
+        // --- FLOWER LOGIC ---
+        // Using the exact list from your 1.txt file
         const flowerImages = [
             "https://img.icons8.com/color/150/tudor-rose.png",
             "https://img.icons8.com/3d-fluency/150/camellia.png",
@@ -416,15 +418,42 @@
             "https://img.icons8.com/3d-fluency/150/yellow-flower.png",
             "https://img.icons8.com/3d-fluency/150/pink-flower.png",
             "https://img.icons8.com/3d-fluency/150/flower-1.png",
+            "https://img.icons8.com/3d-fluency/150/3d-fluency-lotus.png",
             "https://img.icons8.com/color-glass/150/spring.png",
+            "https://img.icons8.com/color-glass/150/camellia.png",
             "https://img.icons8.com/color-glass/150/violet-flower.png",
+            "https://img.icons8.com/color-glass/150/flower.png",
+            "https://img.icons8.com/color-glass/150/trillium.png",
             "https://img.icons8.com/emoji/150/hibiscus.png",
+            "https://img.icons8.com/emoji/150/blossom.png",
             "https://img.icons8.com/emoji/150/cherry-blossom.png",
+            "https://img.icons8.com/emoji/150/tulip-emoji.png",
             "https://img.icons8.com/emoji/150/sunflower-emoji.png",
             "https://img.icons8.com/color-glass/150/lavender.png",
+            "https://img.icons8.com/color-glass/150/geometric-flowers.png",
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-blue-flowers-of-nature-flat-icons-inmotus-design.png",
-            "https://img.icons8.com/color/150/flower.png"
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-blue-colored-flowers-flat-icons-inmotus-design-8.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-flower-colored-flowers-flat-icons-inmotus-design-3.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-flower-colored-flowers-flat-icons-inmotus-design-7.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-flower-colored-flowers-flat-icons-inmotus-design-4.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-ui-flat-icons-inmotus-design-5.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-flower-flowers-of-nature-flat-icons-inmotus-design-3.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-3.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-8.png",
+            "https://img.icons8.com/external-others-inmotus-design/150/external-Flower-16px-set-others-inmotus-design.png", /* Corrected Typo */
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-ui-flat-icons-inmotus-design-2.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-2.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-7.png",
+            "https://img.icons8.com/external-others-inmotus-design/150/external-Flower-flowers-others-inmotus-design.png",
+            "https://img.icons8.com/external-others-inmotus-design/150/external-Flower-flowers-others-inmotus-design-5.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-asian-colored-flowers-flat-icons-inmotus-design.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-astra-colored-flowers-flat-icons-inmotus-design-4.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flowers-colored-flowers-flat-icons-inmotus-design.png",
+            "https://img.icons8.com/color/150/flower.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-branch-colored-flowers-flat-icons-inmotus-design.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-astra-colored-flowers-flat-icons-inmotus-design.png"
         ];
+        [cite_start][cite: 2]
 
         function createFlower(x, y) {
             const img = document.createElement('img');
@@ -435,10 +464,10 @@
             img.src = randomSrc;
 
             // Set Position (if x/y provided use them, else random)
-            // We want flowers scattered, but mostly avoiding the dead center where text is.
             if (x === undefined || y === undefined) {
-                const randomX = Math.random() * (window.innerWidth - 100);
-                const randomY = Math.random() * (window.innerHeight - 150) + 125; // Below header
+                // Keep them within the viewport but away from edges
+                const randomX = Math.random() * (window.innerWidth - 100) + 20;
+                const randomY = Math.random() * (window.innerHeight - 200) + 130; 
                 img.style.left = randomX + 'px';
                 img.style.top = randomY + 'px';
             } else {
