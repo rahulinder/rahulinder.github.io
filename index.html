@@ -259,19 +259,17 @@
             object-fit: contain;
         }
         
-        /* Updated Animation: Spin AND Fall simultaneously */
         .flower-spin-fall {
-            animation: spinAndFall 1.5s ease-in forwards;
+            animation: spinAndFall 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
             pointer-events: none;
         }
 
         @keyframes spinAndFall {
             0% { 
-                /* Start Position */
                 transform: translateY(0) rotate(0deg); 
             }
             100% { 
-                /* End Position: Dropped 120vh and rotated 2 times */
+                /* Spin and Drop */
                 transform: translateY(120vh) rotate(720deg); 
                 opacity: 0; 
             }
@@ -441,32 +439,26 @@
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-astra-colored-flowers-flat-icons-inmotus-design.png"
         ];
        
-        function createFlower(x, y) {
+        function createFlower() {
             const img = document.createElement('img');
             img.classList.add('flower');
+            // Keep the random IMAGE for variety
             const randomSrc = flowerImages[Math.floor(Math.random() * flowerImages.length)];
             img.src = randomSrc;
 
-            if (x === undefined || y === undefined) {
-                // Ensure flower spawns in viewable area but not blocking header
-                const randomX = Math.random() * (window.innerWidth - 100) + 20;
-                const randomY = Math.random() * (window.innerHeight - 200) + 130; 
-                img.style.left = randomX + 'px';
-                img.style.top = randomY + 'px';
-            } else {
-                img.style.left = x + 'px';
-                img.style.top = y + 'px';
-            }
+            // FIXED POSITION (Top-Left, below header)
+            img.style.left = '20px';
+            img.style.top = '130px'; 
 
             img.addEventListener('click', function(e) {
                 e.stopPropagation(); 
                 img.classList.add('flower-spin-fall');
                 
-                // Wait for animation (1.5s) before spawning new one
+                // Wait for animation (2s) before spawning new one
                 setTimeout(() => {
                     img.remove();
-                    createFlower(); // Spawns new flower in random spot
-                }, 1450);
+                    createFlower(); // Spawns new flower in same fixed spot
+                }, 1900);
             });
 
             document.body.appendChild(img);
