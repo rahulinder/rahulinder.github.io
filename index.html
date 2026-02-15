@@ -259,7 +259,7 @@
             object-fit: contain;
         }
         
-        /* New Animation: Spin in Place (0-40%), Then Fall (40-100%) */
+        /* Updated Animation: Spin in Place (0-30%), Then Fall Straight (30-100%) */
         .flower-spin-fall {
             animation: spinAndFall 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
             pointer-events: none;
@@ -267,15 +267,16 @@
 
         @keyframes spinAndFall {
             0% { 
-                transform: rotate(0deg) translateY(0); 
+                /* Start: No movement */
+                transform: translateY(0) rotate(0deg); 
             }
             30% { 
                 /* Spin in place phase */
-                transform: rotate(360deg) translateY(0); 
+                transform: translateY(0) rotate(360deg); 
             }
             100% { 
-                /* Fall phase */
-                transform: rotate(720deg) translateY(120vh); 
+                /* Fall phase: Drop straight down 120vh while continuing to spin */
+                transform: translateY(120vh) rotate(720deg); 
                 opacity: 0; 
             }
         }
@@ -451,7 +452,6 @@
             img.src = randomSrc;
 
             if (x === undefined || y === undefined) {
-                // Ensure flower spawns in viewable area but not blocking header
                 const randomX = Math.random() * (window.innerWidth - 100) + 20;
                 const randomY = Math.random() * (window.innerHeight - 200) + 130; 
                 img.style.left = randomX + 'px';
