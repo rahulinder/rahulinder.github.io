@@ -83,44 +83,36 @@
             position: relative;
             display: inline-block;
             cursor: grab;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             margin-bottom: 30px; 
             z-index: 10; 
-            width: 100%;
-            max-width: 1200px; 
-            height: 150px; 
         }
 
         .name-wrapper:active {
             cursor: grabbing;
         }
 
-        /* --- SVG HANDWRITING ANIMATION --- */
-        .name-svg {
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-            transition: opacity 0.5s, transform 0.5s;
+        /* --- NAME ANIMATION (Reveal Effect) --- */
+        
+        @keyframes writeNameReveal {
+            0% { clip-path: inset(0 100% 0 0); } /* Hidden from right */
+            100% { clip-path: inset(0 0 0 0); }  /* Fully visible */
         }
 
-        .name-text-path {
+        h1.main-name {
             font-family: 'Ephesis', cursive;
             font-size: 110px;
-            fill: transparent;
-            stroke: #001d3d;
-            stroke-width: 1.5px;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 3000;
-            stroke-dashoffset: 3000;
-            animation: drawStroke 4s ease-out forwards, fillColor 1s ease forwards 3.5s;
-        }
-
-        @keyframes drawStroke {
-            to { stroke-dashoffset: 0; }
-        }
-
-        @keyframes fillColor {
-            to { fill: #001d3d; }
+            font-weight: normal;
+            color: #001d3d;
+            margin: 0;
+            padding: 0 10px;
+            line-height: 1.1;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
+            pointer-events: none;
+            
+            /* Apply Writing Reveal Animation */
+            clip-path: inset(0 100% 0 0);
+            animation: writeNameReveal 3s cubic-bezier(0.5, 0, 0.5, 1) forwards;
         }
 
         /* Hi Message */
@@ -154,17 +146,19 @@
         }
 
         /* Interaction States */
-        .name-wrapper:hover .name-svg {
-            transform: scale(1.1);
+        .name-wrapper:hover .main-name {
+            transform: scale(1.15);
+            text-shadow: 0 10px 20px rgba(0, 29, 61, 0.2);
         }
         .name-wrapper:hover .underline {
-            width: 40%; 
-            left: 30%;
+            width: 80%; 
+            left: 10%;
         }
 
-        .name-wrapper.active .name-svg {
+        .name-wrapper.active .main-name {
             opacity: 0;
             transform: scale(0.5);
+            clip-path: inset(0 0 0 0) !important; /* Ensure full text is hidden properly */
         }
 
         .name-wrapper.active .hi-msg {
@@ -184,7 +178,8 @@
             font-family: 'Poppins', sans-serif;
             opacity: 0;
             z-index: 10;
-            animation: fadeIn 2s ease forwards 4s; 
+            /* Delayed Fade In */
+            animation: fadeIn 2s ease forwards 3.5s; 
         }
 
         .about-title {
@@ -260,29 +255,23 @@
 
         /* --- FLOWER STYLES --- */
         .flower {
-            position: fixed; /* Fixed so they stay relative to viewport */
+            position: fixed;
             width: 60px;
             height: 60px;
             cursor: pointer;
-            z-index: 15; /* Sits ABOVE the name/about section so it's clickable */
+            z-index: 15;
             transition: transform 0.3s ease;
-            object-fit: contain; /* Ensures the image doesn't distort */
+            object-fit: contain;
         }
         
-        /* Animation classes for the flower interaction */
         .flower-spin-fall {
             animation: spinAndFall 1.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
-            pointer-events: none; /* Prevent double clicking */
+            pointer-events: none;
         }
 
         @keyframes spinAndFall {
-            0% {
-                transform: rotate(0deg) translateY(0);
-            }
-            100% {
-                transform: rotate(720deg) translateY(100vh); /* Spin 2 times and drop */
-                opacity: 0;
-            }
+            0% { transform: rotate(0deg) translateY(0); }
+            100% { transform: rotate(720deg) translateY(100vh); opacity: 0; }
         }
 
         /* Dropdown Menu */
@@ -349,7 +338,7 @@
         }
 
         @media (max-width: 600px) {
-            .name-text-path { font-size: 70px; }
+            h1.main-name, h1.hi-msg { font-size: 70px; }
             .logo { font-size: 70px; }
             .dropdown-menu.open { height: 50vh; }
             .about-section { max-width: 90%; }
@@ -366,11 +355,7 @@
 
     <main>
         <div id="dragName" class="name-wrapper">
-            <svg class="name-svg" viewBox="0 0 1000 150" preserveAspectRatio="xMidYMid meet">
-                <text x="50%" y="65%" text-anchor="middle" dominant-baseline="middle" class="name-text-path">
-                    Rahulinder Singh Sidhu
-                </text>
-            </svg>
+            <h1 class="main-name">Rahulinder Singh Sidhu</h1>
             <h1 class="hi-msg">Hi!</h1>
             <div class="underline"></div>
         </div>
@@ -410,7 +395,6 @@
 
     <script>
         // --- FLOWER LOGIC ---
-        // Using the exact list from your 1.txt file
         const flowerImages = [
             "https://img.icons8.com/color/150/tudor-rose.png",
             "https://img.icons8.com/3d-fluency/150/camellia.png",
@@ -440,7 +424,7 @@
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-flower-flowers-of-nature-flat-icons-inmotus-design-3.png",
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-3.png",
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-8.png",
-            "https://img.icons8.com/external-others-inmotus-design/150/external-Flower-16px-set-others-inmotus-design.png", /* Corrected Typo */
+            "https://img.icons8.com/external-others-inmotus-design/150/external-Flower-16px-set-others-inmotus-design.png", 
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-ui-flat-icons-inmotus-design-2.png",
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-2.png",
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-7.png",
@@ -453,19 +437,15 @@
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-branch-colored-flowers-flat-icons-inmotus-design.png",
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-astra-colored-flowers-flat-icons-inmotus-design.png"
         ];
-        [cite_start][cite: 2]
+       
 
         function createFlower(x, y) {
             const img = document.createElement('img');
             img.classList.add('flower');
-            
-            // Pick random flower image
             const randomSrc = flowerImages[Math.floor(Math.random() * flowerImages.length)];
             img.src = randomSrc;
 
-            // Set Position (if x/y provided use them, else random)
             if (x === undefined || y === undefined) {
-                // Keep them within the viewport but away from edges
                 const randomX = Math.random() * (window.innerWidth - 100) + 20;
                 const randomY = Math.random() * (window.innerHeight - 200) + 130; 
                 img.style.left = randomX + 'px';
@@ -475,25 +455,18 @@
                 img.style.top = y + 'px';
             }
 
-            // Click Interaction
             img.addEventListener('click', function(e) {
-                // Prevent ripple from firing underneath
                 e.stopPropagation(); 
-                
-                // Add falling animation class
                 img.classList.add('flower-spin-fall');
-
-                // Wait for animation to finish, then remove and add new one
                 setTimeout(() => {
                     img.remove();
-                    createFlower(); // Spawn new one at random spot
+                    createFlower(); 
                 }, 1500);
             });
 
             document.body.appendChild(img);
         }
 
-        // Initialize 5 flowers on load
         for(let i=0; i<5; i++) {
             createFlower();
         }
