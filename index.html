@@ -259,23 +259,19 @@
             object-fit: contain;
         }
         
-        /* Updated Animation: Spin in Place (0-30%), Then Fall Straight (30-100%) */
+        /* Updated Animation: Spin AND Fall simultaneously */
         .flower-spin-fall {
-            animation: spinAndFall 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+            animation: spinAndFall 1.5s ease-in forwards;
             pointer-events: none;
         }
 
         @keyframes spinAndFall {
             0% { 
-                /* Start: No movement */
+                /* Start Position */
                 transform: translateY(0) rotate(0deg); 
             }
-            30% { 
-                /* Spin in place phase */
-                transform: translateY(0) rotate(360deg); 
-            }
             100% { 
-                /* Fall phase: Drop straight down 120vh while continuing to spin */
+                /* End Position: Dropped 120vh and rotated 2 times */
                 transform: translateY(120vh) rotate(720deg); 
                 opacity: 0; 
             }
@@ -452,6 +448,7 @@
             img.src = randomSrc;
 
             if (x === undefined || y === undefined) {
+                // Ensure flower spawns in viewable area but not blocking header
                 const randomX = Math.random() * (window.innerWidth - 100) + 20;
                 const randomY = Math.random() * (window.innerHeight - 200) + 130; 
                 img.style.left = randomX + 'px';
@@ -465,11 +462,11 @@
                 e.stopPropagation(); 
                 img.classList.add('flower-spin-fall');
                 
-                // Wait for animation (2s) before spawning new one
+                // Wait for animation (1.5s) before spawning new one
                 setTimeout(() => {
                     img.remove();
                     createFlower(); // Spawns new flower in random spot
-                }, 1900);
+                }, 1450);
             });
 
             document.body.appendChild(img);
