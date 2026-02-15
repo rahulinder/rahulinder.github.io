@@ -93,10 +93,9 @@
         }
 
         /* --- NAME ANIMATION (Reveal Effect) --- */
-        
         @keyframes writeNameReveal {
-            0% { clip-path: inset(0 100% 0 0); } /* Hidden from right */
-            100% { clip-path: inset(0 0 0 0); }  /* Fully visible */
+            0% { clip-path: inset(0 100% 0 0); }
+            100% { clip-path: inset(0 0 0 0); }
         }
 
         h1.main-name {
@@ -109,13 +108,10 @@
             line-height: 1.1;
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
             pointer-events: none;
-            
-            /* Apply Writing Reveal Animation */
             clip-path: inset(0 100% 0 0);
             animation: writeNameReveal 3s cubic-bezier(0.5, 0, 0.5, 1) forwards;
         }
 
-        /* Hi Message */
         h1.hi-msg {
             font-family: 'Ephesis', cursive;
             font-size: 110px;
@@ -158,7 +154,7 @@
         .name-wrapper.active .main-name {
             opacity: 0;
             transform: scale(0.5);
-            clip-path: inset(0 0 0 0) !important; /* Ensure full text is hidden properly */
+            clip-path: inset(0 0 0 0) !important;
         }
 
         .name-wrapper.active .hi-msg {
@@ -178,7 +174,6 @@
             font-family: 'Poppins', sans-serif;
             opacity: 0;
             z-index: 10;
-            /* Delayed Fade In */
             animation: fadeIn 2s ease forwards 3.5s; 
         }
 
@@ -264,14 +259,25 @@
             object-fit: contain;
         }
         
+        /* New Animation: Spin in Place (0-40%), Then Fall (40-100%) */
         .flower-spin-fall {
-            animation: spinAndFall 1.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+            animation: spinAndFall 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
             pointer-events: none;
         }
 
         @keyframes spinAndFall {
-            0% { transform: rotate(0deg) translateY(0); }
-            100% { transform: rotate(720deg) translateY(100vh); opacity: 0; }
+            0% { 
+                transform: rotate(0deg) translateY(0); 
+            }
+            30% { 
+                /* Spin in place phase */
+                transform: rotate(360deg) translateY(0); 
+            }
+            100% { 
+                /* Fall phase */
+                transform: rotate(720deg) translateY(120vh); 
+                opacity: 0; 
+            }
         }
 
         /* Dropdown Menu */
@@ -438,7 +444,6 @@
             "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-astra-colored-flowers-flat-icons-inmotus-design.png"
         ];
        
-
         function createFlower(x, y) {
             const img = document.createElement('img');
             img.classList.add('flower');
@@ -446,6 +451,7 @@
             img.src = randomSrc;
 
             if (x === undefined || y === undefined) {
+                // Ensure flower spawns in viewable area but not blocking header
                 const randomX = Math.random() * (window.innerWidth - 100) + 20;
                 const randomY = Math.random() * (window.innerHeight - 200) + 130; 
                 img.style.left = randomX + 'px';
@@ -458,18 +464,19 @@
             img.addEventListener('click', function(e) {
                 e.stopPropagation(); 
                 img.classList.add('flower-spin-fall');
+                
+                // Wait for animation (2s) before spawning new one
                 setTimeout(() => {
                     img.remove();
-                    createFlower(); 
-                }, 1500);
+                    createFlower(); // Spawns new flower in random spot
+                }, 1900);
             });
 
             document.body.appendChild(img);
         }
 
-        for(let i=0; i<5; i++) {
-            createFlower();
-        }
+        // Initialize ONLY 1 flower
+        createFlower();
 
 
         // --- RIPPLE EFFECT ---
