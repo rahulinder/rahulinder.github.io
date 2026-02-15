@@ -85,10 +85,9 @@
             cursor: grab;
             margin-bottom: 30px; 
             z-index: 10; 
-            /* Width/Height needed for SVG centering */
             width: 100%;
             max-width: 1200px; 
-            height: 150px; /* Space for the text */
+            height: 150px; 
         }
 
         .name-wrapper:active {
@@ -96,35 +95,24 @@
         }
 
         /* --- SVG HANDWRITING ANIMATION --- */
-        
-        /* The SVG Container */
         .name-svg {
             width: 100%;
             height: 100%;
             overflow: visible;
-            transition: opacity 3s, transform 3s;/*            here me             */
+            transition: opacity 0.5s, transform 0.5s;
         }
 
-        /* The SVG Text inside */
         .name-text-path {
             font-family: 'Ephesis', cursive;
             font-size: 110px;
-            
-            /* STROKE SETTINGS (The "Ink") */
-            fill: transparent;         /* Start with no color inside */
-            stroke: #001d3d;           /* Outline color */
-            stroke-width: 1.5px;       /* Thickness of the pen */
+            fill: transparent;
+            stroke: #001d3d;
+            stroke-width: 1.5px;
             stroke-linecap: round;
             stroke-linejoin: round;
-            
-            /* ANIMATION MAGIC */
-            stroke-dasharray: 3000;    /* Length of the line (approx) */
-            stroke-dashoffset: 3000;   /* Push the line completely out of view */
-            
-            /* 1. Draw outline (4s), 2. Fade in solid color (0.5s) */
-            animation: 
-                drawStroke 4s ease-out forwards, 
-                fillColor 1s ease forwards 3.5s;
+            stroke-dasharray: 3000;
+            stroke-dashoffset: 3000;
+            animation: drawStroke 4s ease-out forwards, fillColor 1s ease forwards 3.5s;
         }
 
         @keyframes drawStroke {
@@ -135,7 +123,7 @@
             to { fill: #001d3d; }
         }
 
-        /* --- HI MESSAGE (Hidden by default) --- */
+        /* Hi Message */
         h1.hi-msg {
             font-family: 'Ephesis', cursive;
             font-size: 110px;
@@ -146,8 +134,6 @@
             line-height: 1.1;
             transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             pointer-events: none;
-            
-            /* Centering */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -159,7 +145,7 @@
         .underline {
             position: absolute;
             left: 50%;
-            bottom: 10px; /* Adjust based on SVG height */
+            bottom: 10px; 
             width: 0;
             height: 2px;
             background-color: #001d3d;
@@ -167,18 +153,15 @@
             pointer-events: none;
         }
 
-        /* --- INTERACTION STATES --- */
-        
-        /* Hover: Scale the SVG */
+        /* Interaction States */
         .name-wrapper:hover .name-svg {
             transform: scale(1.1);
         }
         .name-wrapper:hover .underline {
-            width: 40%; /* Reduced width because SVG is wide */
+            width: 40%; 
             left: 30%;
         }
 
-        /* Active/Clicked: Hide SVG, Show Hi */
         .name-wrapper.active .name-svg {
             opacity: 0;
             transform: scale(0.5);
@@ -194,7 +177,6 @@
             opacity: 0;
         }
 
-
         /* --- ABOUT ME SECTION STYLES --- */
         .about-section {
             max-width: 600px;
@@ -202,7 +184,6 @@
             font-family: 'Poppins', sans-serif;
             opacity: 0;
             z-index: 10;
-            /* Delayed Fade In: Starts after name finishes writing (4s) */
             animation: fadeIn 2s ease forwards 4s; 
         }
 
@@ -277,6 +258,32 @@
             }
         }
 
+        /* --- FLOWER STYLES --- */
+        .flower {
+            position: fixed; /* Fixed so they stay relative to viewport */
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            z-index: 5; /* Above background, below text usually, or just interactive */
+            transition: transform 0.3s ease;
+        }
+        
+        /* Animation classes for the flower interaction */
+        .flower-spin-fall {
+            animation: spinAndFall 1.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+            pointer-events: none; /* Prevent double clicking */
+        }
+
+        @keyframes spinAndFall {
+            0% {
+                transform: rotate(0deg) translateY(0);
+            }
+            100% {
+                transform: rotate(720deg) translateY(100vh); /* Spin 2 times and drop */
+                opacity: 0;
+            }
+        }
+
         /* Dropdown Menu */
         .dropdown-menu {
             position: fixed;
@@ -341,7 +348,6 @@
         }
 
         @media (max-width: 600px) {
-            /* Adjust SVG text size for mobile */
             .name-text-path { font-size: 70px; }
             .logo { font-size: 70px; }
             .dropdown-menu.open { height: 50vh; }
@@ -359,13 +365,11 @@
 
     <main>
         <div id="dragName" class="name-wrapper">
-            
             <svg class="name-svg" viewBox="0 0 1000 150" preserveAspectRatio="xMidYMid meet">
                 <text x="50%" y="65%" text-anchor="middle" dominant-baseline="middle" class="name-text-path">
                     Rahulinder Singh Sidhu
                 </text>
             </svg>
-
             <h1 class="hi-msg">Hi!</h1>
             <div class="underline"></div>
         </div>
@@ -404,9 +408,71 @@
     </div>
 
     <script>
+        [cite_start]// --- FLOWER LOGIC [cite: 1] ---
+        const flowerImages = [
+            "https://img.icons8.com/color/150/tudor-rose.png",
+            "https://img.icons8.com/3d-fluency/150/camellia.png",
+            "https://img.icons8.com/3d-fluency/150/blue-flower.png",
+            "https://img.icons8.com/3d-fluency/150/yellow-flower.png",
+            "https://img.icons8.com/3d-fluency/150/pink-flower.png",
+            "https://img.icons8.com/3d-fluency/150/flower-1.png",
+            "https://img.icons8.com/color-glass/150/spring.png",
+            "https://img.icons8.com/color-glass/150/violet-flower.png",
+            "https://img.icons8.com/emoji/150/hibiscus.png",
+            "https://img.icons8.com/emoji/150/cherry-blossom.png",
+            "https://img.icons8.com/emoji/150/sunflower-emoji.png",
+            "https://img.icons8.com/color-glass/150/lavender.png",
+            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-blue-flowers-of-nature-flat-icons-inmotus-design.png",
+            "https://img.icons8.com/color/150/flower.png"
+        ];
+
+        function createFlower(x, y) {
+            const img = document.createElement('img');
+            img.classList.add('flower');
+            
+            // Pick random flower image
+            const randomSrc = flowerImages[Math.floor(Math.random() * flowerImages.length)];
+            img.src = randomSrc;
+
+            // Set Position (if x/y provided use them, else random)
+            // We want flowers scattered, but mostly avoiding the dead center where text is.
+            if (x === undefined || y === undefined) {
+                const randomX = Math.random() * (window.innerWidth - 100);
+                const randomY = Math.random() * (window.innerHeight - 150) + 125; // Below header
+                img.style.left = randomX + 'px';
+                img.style.top = randomY + 'px';
+            } else {
+                img.style.left = x + 'px';
+                img.style.top = y + 'px';
+            }
+
+            // Click Interaction
+            img.addEventListener('click', function(e) {
+                // Prevent ripple from firing underneath
+                e.stopPropagation(); 
+                
+                // Add falling animation class
+                img.classList.add('flower-spin-fall');
+
+                // Wait for animation to finish, then remove and add new one
+                setTimeout(() => {
+                    img.remove();
+                    createFlower(); // Spawn new one at random spot
+                }, 1500);
+            });
+
+            document.body.appendChild(img);
+        }
+
+        // Initialize 5 flowers on load
+        for(let i=0; i<5; i++) {
+            createFlower();
+        }
+
+
         // --- RIPPLE EFFECT ---
         window.addEventListener('click', function(e) {
-            if (e.target.closest('header')) return;
+            if (e.target.closest('header') || e.target.closest('.flower')) return;
             const ripple = document.createElement('div');
             ripple.classList.add('ripple');
             document.body.appendChild(ripple);
@@ -458,12 +524,8 @@
         window.addEventListener('mouseup', () => {
             if (!isDragging) return;
             isDragging = false;
-            const svg = draggable.querySelector('.name-svg');
-            
-            // Re-apply transition for smooth return
             draggable.style.transition = 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
             draggable.style.transform = 'translate(0px, 0px)';
-            
             if (!hasMoved) {
                 triggerHiAnimation();
             }
