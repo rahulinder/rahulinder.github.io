@@ -83,71 +83,59 @@
             position: relative;
             display: inline-block;
             cursor: grab;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             margin-bottom: 30px; 
             z-index: 10; 
+            /* Width/Height needed for SVG centering */
+            width: 100%;
+            max-width: 1200px; 
+            height: 150px; /* Space for the text */
         }
 
         .name-wrapper:active {
             cursor: grabbing;
         }
 
-        /* --- NAME ANIMATION & PEN ILLUSION --- */
+        /* --- SVG HANDWRITING ANIMATION --- */
         
-        /* 1. The Pen Icon (Pseudo-element) */
-        .name-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 20%; /* Adjust vertical position of pen */
-            left: 0;
-            width: 50px; 
-            height: 50px;
-            /* Quill Icon */
-            background: url('https://img.icons8.com/ios-filled/100/001d3d/fountain-pen.png') no-repeat center/contain;
-            transform: translate(-0%, -100%) rotate(15deg); /* Tilt the pen */
-            pointer-events: none; /* Let clicks pass through */
-            opacity: 0; /* Hidden by default */
-            
-            /* Animate the pen moving across */
-            animation: movePen 3.5s cubic-bezier(0.5, 0, 0.5, 1) forwards;
+        /* The SVG Container */
+        .name-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            transition: opacity 0.5s, transform 0.5s;
         }
 
-        @keyframes movePen {
-            0% { 
-                left: 0; 
-                opacity: 1; 
-            }
-            85% {
-                opacity: 1;
-            }
-            100% { 
-                left: 100%; 
-                opacity: 0; /* Fade out pen at end */
-            }
-        }
-
-        /* 2. The Reveal Animation */
-        @keyframes writeNameReveal {
-            0% { clip-path: inset(0 100% 0 0); }
-            100% { clip-path: inset(0 -20% 0 0); } /* -20% ensures end of loops aren't cut */
-        }
-
-        h1.main-name {
+        /* The SVG Text inside */
+        .name-text-path {
             font-family: 'Ephesis', cursive;
             font-size: 110px;
-            font-weight: normal;
-            color: #001d3d;
-            margin: 0;
-            padding: 0 10px;
-            line-height: 1.1;
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
-            pointer-events: none;
             
-            /* Sync this clip-path animation exactly with the movePen animation */
-            clip-path: inset(0 100% 0 0);
-            animation: writeNameReveal 3.5s cubic-bezier(0.5, 0, 0.5, 1) forwards;
+            /* STROKE SETTINGS (The "Ink") */
+            fill: transparent;         /* Start with no color inside */
+            stroke: #001d3d;           /* Outline color */
+            stroke-width: 1.5px;       /* Thickness of the pen */
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            
+            /* ANIMATION MAGIC */
+            stroke-dasharray: 3000;    /* Length of the line (approx) */
+            stroke-dashoffset: 3000;   /* Push the line completely out of view */
+            
+            /* 1. Draw outline (4s), 2. Fade in solid color (0.5s) */
+            animation: 
+                drawStroke 4s ease-out forwards, 
+                fillColor 1s ease forwards 3.5s;
         }
 
+        @keyframes drawStroke {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes fillColor {
+            to { fill: #001d3d; }
+        }
+
+        /* --- HI MESSAGE (Hidden by default) --- */
         h1.hi-msg {
             font-family: 'Ephesis', cursive;
             font-size: 110px;
@@ -158,6 +146,8 @@
             line-height: 1.1;
             transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             pointer-events: none;
+            
+            /* Centering */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -169,7 +159,7 @@
         .underline {
             position: absolute;
             left: 50%;
-            bottom: 10px;
+            bottom: 10px; /* Adjust based on SVG height */
             width: 0;
             height: 2px;
             background-color: #001d3d;
@@ -177,22 +167,21 @@
             pointer-events: none;
         }
 
-        /* Hover States */
-        .name-wrapper:hover .main-name {
-            transform: scale(1.15);
-            text-shadow: 0 10px 20px rgba(0, 29, 61, 0.2);
+        /* --- INTERACTION STATES --- */
+        
+        /* Hover: Scale the SVG */
+        .name-wrapper:hover .name-svg {
+            transform: scale(1.1);
         }
-
         .name-wrapper:hover .underline {
-            width: 80%;
-            left: 10%;
+            width: 40%; /* Reduced width because SVG is wide */
+            left: 30%;
         }
 
-        /* Active States */
-        .name-wrapper.active .main-name {
+        /* Active/Clicked: Hide SVG, Show Hi */
+        .name-wrapper.active .name-svg {
             opacity: 0;
             transform: scale(0.5);
-            clip-path: inset(0 0 0 0) !important; 
         }
 
         .name-wrapper.active .hi-msg {
@@ -205,6 +194,7 @@
             opacity: 0;
         }
 
+
         /* --- ABOUT ME SECTION STYLES --- */
         .about-section {
             max-width: 600px;
@@ -212,7 +202,7 @@
             font-family: 'Poppins', sans-serif;
             opacity: 0;
             z-index: 10;
-            /* Start after pen finishes (3.5s + 0.5s delay) */
+            /* Delayed Fade In: Starts after name finishes writing (4s) */
             animation: fadeIn 2s ease forwards 4s; 
         }
 
@@ -351,7 +341,8 @@
         }
 
         @media (max-width: 600px) {
-            h1.main-name, h1.hi-msg { font-size: 70px; }
+            /* Adjust SVG text size for mobile */
+            .name-text-path { font-size: 70px; }
             .logo { font-size: 70px; }
             .dropdown-menu.open { height: 50vh; }
             .about-section { max-width: 90%; }
@@ -368,7 +359,13 @@
 
     <main>
         <div id="dragName" class="name-wrapper">
-            <h1 class="main-name">Rahulinder Singh Sidhu</h1>
+            
+            <svg class="name-svg" viewBox="0 0 1000 150" preserveAspectRatio="xMidYMid meet">
+                <text x="50%" y="65%" text-anchor="middle" dominant-baseline="middle" class="name-text-path">
+                    Rahulinder Singh Sidhu
+                </text>
+            </svg>
+
             <h1 class="hi-msg">Hi!</h1>
             <div class="underline"></div>
         </div>
@@ -461,8 +458,12 @@
         window.addEventListener('mouseup', () => {
             if (!isDragging) return;
             isDragging = false;
+            const svg = draggable.querySelector('.name-svg');
+            
+            // Re-apply transition for smooth return
             draggable.style.transition = 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
             draggable.style.transform = 'translate(0px, 0px)';
+            
             if (!hasMoved) {
                 triggerHiAnimation();
             }
