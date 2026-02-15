@@ -92,10 +92,44 @@
             cursor: grabbing;
         }
 
-        /* --- NAME ANIMATION CSS (Writing Effect) --- */
+        /* --- NAME ANIMATION & PEN ILLUSION --- */
+        
+        /* 1. The Pen Icon (Pseudo-element) */
+        .name-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 20%; /* Adjust vertical position of pen */
+            left: 0;
+            width: 50px; 
+            height: 50px;
+            /* Quill Icon */
+            background: url('https://img.icons8.com/ios-filled/100/001d3d/fountain-pen.png') no-repeat center/contain;
+            transform: translate(-0%, -100%) rotate(15deg); /* Tilt the pen */
+            pointer-events: none; /* Let clicks pass through */
+            opacity: 0; /* Hidden by default */
+            
+            /* Animate the pen moving across */
+            animation: movePen 3.5s cubic-bezier(0.5, 0, 0.5, 1) forwards;
+        }
+
+        @keyframes movePen {
+            0% { 
+                left: 0; 
+                opacity: 1; 
+            }
+            85% {
+                opacity: 1;
+            }
+            100% { 
+                left: 100%; 
+                opacity: 0; /* Fade out pen at end */
+            }
+        }
+
+        /* 2. The Reveal Animation */
         @keyframes writeNameReveal {
             0% { clip-path: inset(0 100% 0 0); }
-            100% { clip-path: inset(0 0 0 0); }
+            100% { clip-path: inset(0 -20% 0 0); } /* -20% ensures end of loops aren't cut */
         }
 
         h1.main-name {
@@ -108,9 +142,10 @@
             line-height: 1.1;
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
             pointer-events: none;
-            /* Apply Writing Animation */
+            
+            /* Sync this clip-path animation exactly with the movePen animation */
             clip-path: inset(0 100% 0 0);
-            animation: writeNameReveal 3s cubic-bezier(0.5, 0, 0.5, 1) forwards;
+            animation: writeNameReveal 3.5s cubic-bezier(0.5, 0, 0.5, 1) forwards;
         }
 
         h1.hi-msg {
@@ -177,8 +212,8 @@
             font-family: 'Poppins', sans-serif;
             opacity: 0;
             z-index: 10;
-            /* Delayed Fade In: Starts after name writes */
-            animation: fadeIn 2s ease forwards 3.5s; 
+            /* Start after pen finishes (3.5s + 0.5s delay) */
+            animation: fadeIn 2s ease forwards 4s; 
         }
 
         .about-title {
@@ -372,7 +407,7 @@
     </div>
 
     <script>
-        // --- RIPPLE EFFECT LOGIC ---
+        // --- RIPPLE EFFECT ---
         window.addEventListener('click', function(e) {
             if (e.target.closest('header')) return;
             const ripple = document.createElement('div');
@@ -398,7 +433,7 @@
             }
         }
 
-        // --- DRAG & DROP & ANIMATION LOGIC ---
+        // --- DRAG & DROP LOGIC ---
         const draggable = document.getElementById('dragName');
         let isDragging = false;
         let startX, startY;
@@ -433,7 +468,7 @@
             }
         });
 
-        // --- HI ANIMATION TRIGGER (1.5s) ---
+        // --- HI ANIMATION TRIGGER ---
         function triggerHiAnimation() {
             draggable.classList.add("active");
             setTimeout(() => {
