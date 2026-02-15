@@ -14,7 +14,8 @@
     <style>
         /* General Reset */
         body {
-            background-color: #8ecae6;
+            /* Replaced solid color with a radial gradient for depth */
+            background: radial-gradient(circle at center, #b9e6ff 0%, #8ecae6 70%, #6a9db5 100%);
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -167,14 +168,15 @@
             opacity: 0;
         }
 
-        /* --- ABOUT ME SECTION STYLES --- */
+        /* --- ABOUT ME SECTION STYLES (FIXED VISIBILITY) --- */
         .about-section {
             max-width: 600px;
             color: #001d3d;
             font-family: 'Poppins', sans-serif;
-            opacity: 0;
             z-index: 10;
-            animation: fadeIn 2s ease forwards 3.5s; 
+            /* Removed opacity: 0 and animation delay so it is visible immediately */
+            opacity: 1; 
+            margin-top: 20px;
         }
 
         .about-title {
@@ -192,11 +194,6 @@
             font-weight: 300;
             font-size: 1rem;
             line-height: 1.6;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
         }
 
         /* Footer Area */
@@ -245,33 +242,6 @@
             to {
                 transform: scale(4);
                 opacity: 0;
-            }
-        }
-
-        /* --- FLOWER STYLES --- */
-        .flower {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            z-index: 15;
-            transition: transform 0.3s ease;
-            object-fit: contain;
-        }
-        
-        .flower-spin-fall {
-            animation: spinAndFall 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
-            pointer-events: none;
-        }
-
-        @keyframes spinAndFall {
-            0% { 
-                transform: translateY(0) rotate(0deg); 
-            }
-            100% { 
-                /* Spin and Drop */
-                transform: translateY(120vh) rotate(720deg); 
-                opacity: 0; 
             }
         }
 
@@ -395,82 +365,10 @@
     </div>
 
     <script>
-        // --- FLOWER LOGIC ---
-        const flowerImages = [
-            "https://img.icons8.com/color/150/tudor-rose.png",
-            "https://img.icons8.com/3d-fluency/150/camellia.png",
-            "https://img.icons8.com/3d-fluency/150/blue-flower.png",
-            "https://img.icons8.com/3d-fluency/150/yellow-flower.png",
-            "https://img.icons8.com/3d-fluency/150/pink-flower.png",
-            "https://img.icons8.com/3d-fluency/150/flower-1.png",
-            "https://img.icons8.com/3d-fluency/150/3d-fluency-lotus.png",
-            "https://img.icons8.com/color-glass/150/spring.png",
-            "https://img.icons8.com/color-glass/150/camellia.png",
-            "https://img.icons8.com/color-glass/150/violet-flower.png",
-            "https://img.icons8.com/color-glass/150/flower.png",
-            "https://img.icons8.com/color-glass/150/trillium.png",
-            "https://img.icons8.com/emoji/150/hibiscus.png",
-            "https://img.icons8.com/emoji/150/blossom.png",
-            "https://img.icons8.com/emoji/150/cherry-blossom.png",
-            "https://img.icons8.com/emoji/150/tulip-emoji.png",
-            "https://img.icons8.com/emoji/150/sunflower-emoji.png",
-            "https://img.icons8.com/color-glass/150/lavender.png",
-            "https://img.icons8.com/color-glass/150/geometric-flowers.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-blue-flowers-of-nature-flat-icons-inmotus-design.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-blue-colored-flowers-flat-icons-inmotus-design-8.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-flower-colored-flowers-flat-icons-inmotus-design-3.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-flower-colored-flowers-flat-icons-inmotus-design-7.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-flower-colored-flowers-flat-icons-inmotus-design-4.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-ui-flat-icons-inmotus-design-5.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-flower-flowers-of-nature-flat-icons-inmotus-design-3.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-3.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-8.png",
-            "https://img.icons8.com/external-others-inmotus-design/150/external-Flower-16px-set-others-inmotus-design.png", 
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-ui-flat-icons-inmotus-design-2.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-2.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flower-bud-of-flowers-flat-icons-inmotus-design-7.png",
-            "https://img.icons8.com/external-others-inmotus-design/150/external-Flower-flowers-others-inmotus-design.png",
-            "https://img.icons8.com/external-others-inmotus-design/150/external-Flower-flowers-others-inmotus-design-5.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-asian-colored-flowers-flat-icons-inmotus-design.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-astra-colored-flowers-flat-icons-inmotus-design-4.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-Flowers-colored-flowers-flat-icons-inmotus-design.png",
-            "https://img.icons8.com/color/150/flower.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-branch-colored-flowers-flat-icons-inmotus-design.png",
-            "https://img.icons8.com/external-flat-icons-inmotus-design/150/external-astra-colored-flowers-flat-icons-inmotus-design.png"
-        ];
-       
-        function createFlower() {
-            const img = document.createElement('img');
-            img.classList.add('flower');
-            // Keep the random IMAGE for variety
-            const randomSrc = flowerImages[Math.floor(Math.random() * flowerImages.length)];
-            img.src = randomSrc;
-
-            // FIXED POSITION (Top-Left, below header)
-            img.style.left = '20px';
-            img.style.top = '130px'; 
-
-            img.addEventListener('click', function(e) {
-                e.stopPropagation(); 
-                img.classList.add('flower-spin-fall');
-                
-                // Wait for animation (2s) before spawning new one
-                setTimeout(() => {
-                    img.remove();
-                    createFlower(); // Spawns new flower in same fixed spot
-                }, 1900);
-            });
-
-            document.body.appendChild(img);
-        }
-
-        // Initialize ONLY 1 flower
-        createFlower();
-
-
         // --- RIPPLE EFFECT ---
         window.addEventListener('click', function(e) {
-            if (e.target.closest('header') || e.target.closest('.flower')) return;
+            // Removed flower check as flowers are gone
+            if (e.target.closest('header')) return;
             const ripple = document.createElement('div');
             ripple.classList.add('ripple');
             document.body.appendChild(ripple);
