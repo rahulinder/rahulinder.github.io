@@ -14,8 +14,7 @@
     <style>
         /* General Reset */
         body {
-            /* Replaced solid color with a radial gradient for depth */
-            background: radial-gradient(circle at center, #b9e6ff 0%, #8ecae6 70%, #6a9db5 100%);
+            background-color: #faf0ca; /* UPDATED BACKGROUND COLOR */
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -168,13 +167,12 @@
             opacity: 0;
         }
 
-        /* --- ABOUT ME SECTION STYLES (FIXED VISIBILITY) --- */
+        /* --- ABOUT ME SECTION STYLES --- */
         .about-section {
             max-width: 600px;
             color: #001d3d;
             font-family: 'Poppins', sans-serif;
             z-index: 10;
-            /* Removed opacity: 0 and animation delay so it is visible immediately */
             opacity: 1; 
             margin-top: 20px;
         }
@@ -273,7 +271,7 @@
             padding: 15px 0;
             text-decoration: none;
             font-size: 1.5rem;
-            color: #caf0f8;
+            color: #caf0f8; /* Light blue text */
             display: block;
             transition: 0.3s;
             font-weight: 500;
@@ -367,7 +365,6 @@
     <script>
         // --- RIPPLE EFFECT ---
         window.addEventListener('click', function(e) {
-            // Removed flower check as flowers are gone
             if (e.target.closest('header')) return;
             const ripple = document.createElement('div');
             ripple.classList.add('ripple');
